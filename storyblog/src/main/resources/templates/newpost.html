@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Νέα Ιστορία</title>
+</head>
+<body>
+
+<h1>Νέα Ιστορία</h1>
+
+<form th:action="@{/posts}" th:object="${post}" method="post">
+
+    <label>Τίτλος</label><br>
+    <input type="text" th:field="*{title}" required><br><br>
+
+    <label>Κείμενο</label><br>
+    <textarea th:field="*{content}" rows="6" required></textarea><br><br>
+
+    <button type="submit">Αποθήκευση</button>
+</form>
+
+<br>
+<a href="/posts">⬅ Πίσω</a>
+
+</body>
+</html>

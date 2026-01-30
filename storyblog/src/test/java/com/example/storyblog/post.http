@@ -1,0 +1,7 @@
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+
+{
+  "title": "Η δεύτερη ιστορία",
+  "content": "Αυτό είναι το δεύτερο post στο StoryBlog."
+}

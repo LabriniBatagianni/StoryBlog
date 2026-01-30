@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StoryBlog</title>
+</head>
+<body>
+
+<h1>Ιστορίες</h1>
+
+<a href="/posts/new">➕ Νέα ιστορία</a>
+
+<hr>
+
+<div th:if="${#lists.isEmpty(posts)}">
+    <p>Δεν υπάρχουν ιστορίες ακόμα.</p>
+</div>
+
+<div th:each="post : ${posts}">
+    <h3 th:text="${post.title}"></h3>
+    <p th:text="${post.content}"></p>
+    <hr>
+</div>
+
+</body>
+</html>
