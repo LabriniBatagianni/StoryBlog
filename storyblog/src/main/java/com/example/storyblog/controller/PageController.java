@@ -15,21 +15,21 @@ public class PageController {
         this.postService = postService;
     }
 
-    // GET /posts → λίστα ιστοριών
+    // GET /posts → list of stories
     @GetMapping("/posts")
     public String viewPosts(Model model) {
         model.addAttribute("posts", postService.findAllPosts());
         return "posts";
     }
 
-    // GET /posts/new → φόρμα
+    // GET /posts/new → form
     @GetMapping("/posts/new")
     public String newPostForm(Model model) {
         model.addAttribute("post", new Post());
         return "new-post";
     }
 
-    // POST /posts → αποθήκευση
+    // POST /posts → save
     @PostMapping("/posts")
     public String createPost(@ModelAttribute Post post) {
         postService.savePost(post);
