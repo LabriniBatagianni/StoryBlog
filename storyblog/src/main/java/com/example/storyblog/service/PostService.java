@@ -1,25 +1,19 @@
 package com.example.storyblog.service;
 
+import com.example.storyblog.dto.PostRequest;
 import com.example.storyblog.entity.Post;
-import com.example.storyblog.repository.PostRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class PostService {
+public interface PostService {
 
-    private final PostRepository postRepository;
+    List<Post> findAllPosts();
 
-    public PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
+    Post findPostById(Long id);
 
-    public List<Post> findAllPosts() {
-        return postRepository.findAll();
-    }
+    Post savePost(Post post);
 
-    public Post savePost(Post post) {
-        return postRepository.save(post);
-    }
+    Post updatePost(Long id, PostRequest request);
+
+    void deletePost(Long id);
 }
