@@ -1,25 +1,14 @@
 package com.example.storyblog.service;
 
+import com.example.storyblog.dto.UserRequest;
 import com.example.storyblog.entity.User;
-import com.example.storyblog.repository.UserRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class UserService {
-
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
+public interface UserService {
+    List<User> findAllUsers();
+    User findUserById(Long id);
+    User createUser(UserRequest request);
+    User updateUser(Long id, UserRequest request);
+    void deleteUser(Long id);
 }

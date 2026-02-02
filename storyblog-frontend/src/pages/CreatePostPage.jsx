@@ -1,72 +1,65 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../api/posts";
-import Layout from "../components/Layout";
 
 export default function CreatePostPage() {
-    const nav = useNavigate();
+    const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [saving, setSaving] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
 
-    const canSave = title.trim().length > 0 && content.trim().length > 0 && !saving;
-
-    async function onSubmit(e) {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        if (!canSave) return;
+        setError("");
+
+        if (!title.trim() || !content.trim()) {
+            setError("Συμπλήρωσε τίτλο και περιεχόμενο.");
+            return;
+        }
 
         try {
-            setSaving(true);
-            setError("");
+            setSubmitting(true);
             await createPost({ title: title.trim(), content: content.trim() });
-            nav("/posts");
-        } catch (e2) {
-            setError(e2?.message || "Failed to create post");
+            navigate("/posts");
+        } catch (err) {
+            setError(err?.message || "Κάτι πήγε στραβά στο Create Post.");
         } finally {
-            setSaving(false);
+            setSubmitting(false);
         }
-    }
+    };
 
     return (
-        <Layout>
-            <h3>Create Post</h3>
+        <div className="page">
+            <h1>Create Post</h1>
 
-            {error && (
-                <div style={{ padding: 12, border: "1px solid #f5c2c2", background: "#ffecec", borderRadius: 10, marginBottom: 10 }}>
-                    <b>Error:</b> {error}
-                </div>
-            )}
-
-            <form onSubmit={onSubmit} style={{ display: "grid", gap: 10 }}>
+            <form onSubmit={onSubmit} className="card">
                 <label>
                     Title
                     <input
+                        type="text"
                         value={title}
-                        onChange={e => setTitle(e.target.value)}
-                        style={{ width: "100%", padding: 10, borderRadius: 10, border: "1px solid #ccc" }}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Η Ιστορία Μου"
                     />
                 </label>
 
                 <label>
                     Content
                     <textarea
+                        rows={6}
                         value={content}
-                        onChange={e => setContent(e.target.value)}
-                        rows={8}
-                        style={{ width: "100%", padding: 10, borderRadius: 10, border: "1px solid #ccc" }}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Γράψε την ιστορία σου εδώ..."
                     />
                 </label>
 
-                <div style={{ display: "flex", gap: 8 }}>
-                    <button type="submit" disabled={!canSave}>
-                        {saving ? "Saving..." : "Create"}
-                    </button>
-                    <button type="button" onClick={() => nav("/posts")}>
-                        Cancel
-                    </button>
-                </div>
+                {error && <p className="error">{error}</p>}
+
+                <button type="submit" disabled={submitting}>
+                    {submitting ? "Saving..." : "Save Post"}
+                </button>
             </form>
-        </Layout>
+        </div>
     );
 }

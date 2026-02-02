@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPosts, deletePost } from "../api/posts";
+import { getPosts, deletePost } from "../api/posts.js";
 import StatusBox from "../components/StatusBox";
-import Layout from "../components/Layout";
 
 export default function PostsPage() {
     const [posts, setPosts] = useState([]);
@@ -14,13 +13,18 @@ export default function PostsPage() {
             setError("");
             setLoading(true);
             const data = await getPosts();
+            console.log("POSTS DATA:", data, "isArray:", Array.isArray(data));
+            console.log("getPosts() returned:", data);
             setPosts(data);
         } catch (e) {
+            console.error("load() failed:", e);
             setError(e?.message || "Failed to load posts");
         } finally {
             setLoading(false);
         }
     }
+
+    console.log("posts state:", posts);
 
     useEffect(() => {
         load();
@@ -32,7 +36,6 @@ export default function PostsPage() {
 
         try {
             await deletePost(id);
-            // αφαιρεί το post από το state χωρίς refetch
             setPosts(prev => prev.filter(p => p.id !== id));
         } catch (e) {
             alert(e?.message || "Failed to delete");
@@ -40,7 +43,7 @@ export default function PostsPage() {
     }
 
     return (
-        <Layout>
+        <>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                 <h3 style={{ margin: 0 }}>Posts</h3>
                 <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
@@ -63,21 +66,29 @@ export default function PostsPage() {
                             <tr>
                                 <th style={{ textAlign: "left", padding: 10 }}>Title</th>
                                 <th style={{ textAlign: "left", padding: 10 }}>Content</th>
-                                <th style={{ padding: 10, width: 160 }}>Actions</th>
+                                <th style={{ padding: 10, width: 220 }}>Actions</th>
                             </tr>
                             </thead>
+
                             <tbody>
-                            {posts.map(p => (
+                            {posts.map((p) => (
                                 <tr key={p.id} style={{ borderTop: "1px solid #eee" }}>
                                     <td style={{ padding: 10, fontWeight: 600 }}>{p.title}</td>
+
                                     <td style={{ padding: 10, color: "#333" }}>
                                         {p.content?.length > 120 ? p.content.slice(0, 120) + "…" : p.content}
                                     </td>
+
                                     <td style={{ padding: 10 }}>
                                         <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+                                            <Link to={`/posts/${p.id}`}>
+                                                <button>Read</button>
+                                            </Link>
+
                                             <Link to={`/posts/${p.id}/edit`}>
                                                 <button>Edit</button>
                                             </Link>
+
                                             <button onClick={() => handleDelete(p.id)}>Delete</button>
                                         </div>
                                     </td>
@@ -88,6 +99,6 @@ export default function PostsPage() {
                     </div>
                 )}
             </StatusBox>
-        </Layout>
+        </>
     );
 }
