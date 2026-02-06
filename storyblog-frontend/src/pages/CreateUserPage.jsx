@@ -56,8 +56,8 @@ export default function CreateUserPage() {
                 </label>
 
                 <div style={{ display: "flex", gap: 8 }}>
-                    <button type="submit" disabled={saving}>{saving ? "Saving..." : "Create"}</button>
-                    <button type="button" onClick={() => nav("/users")} disabled={saving}>Cancel</button>
+                    <button type="submit" className="btn" disabled={saving}>{saving ? "Saving..." : "Create"}</button>
+                    <button type="button" className="btn" onClick={() => nav("/users")} disabled={saving}>Cancel</button>
                 </div>
             </form>
         </>

@@ -46,10 +46,12 @@ export default function PostsPage() {
         <>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                 <h3 style={{ margin: 0 }}>Posts</h3>
-                <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-                    <button onClick={load}>Refresh</button>
-                    <Link to="/posts/new">
-                        <button>Create</button>
+                <div className="btn-row" style={{ marginLeft: "auto" }}>
+                    <button type="button" className="btn" onClick={load}>
+                        Refresh
+                    </button>
+                    <Link to="/posts/new" className="btn">
+                        Create
                     </Link>
                 </div>
             </div>
@@ -65,6 +67,7 @@ export default function PostsPage() {
                             <thead style={{ background: "#f6f6f6" }}>
                             <tr>
                                 <th style={{ textAlign: "left", padding: 10 }}>Title</th>
+                                <th style={{ textAlign: "left", padding: 10 }}>Author</th>
                                 <th style={{ textAlign: "left", padding: 10 }}>Content</th>
                                 <th style={{ padding: 10, width: 220 }}>Actions</th>
                             </tr>
@@ -75,21 +78,32 @@ export default function PostsPage() {
                                 <tr key={p.id} style={{ borderTop: "1px solid #eee" }}>
                                     <td style={{ padding: 10, fontWeight: 600 }}>{p.title}</td>
 
+                                    <td style={{ padding: 10 }}>
+                                        {p.author ? (
+                                            <Link to={`/users/${p.author.id}`} style={{ fontWeight: 700, textDecoration: "none" }}>
+                                                {p.author.name}
+                                            </Link>
+                                        ) : (
+                                            <span style={{ color: "#777" }}>—</span>
+                                        )}
+                                    </td>
+
                                     <td style={{ padding: 10, color: "#333" }}>
                                         {p.content?.length > 120 ? p.content.slice(0, 120) + "…" : p.content}
                                     </td>
 
                                     <td style={{ padding: 10 }}>
                                         <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
-                                            <Link to={`/posts/${p.id}`}>
-                                                <button>Read</button>
-                                            </Link>
+                                            <Link to={`/posts/${p.id}`} className="btn">Read</Link>
+                                            <Link to={`/posts/${p.id}/edit`} className="btn">Edit</Link>
+                                            <button
+                                                type="button"
+                                                className="btn btn-danger"
+                                                onClick={() => handleDelete(p.id)}
+                                            >
+                                                Delete
+                                            </button>
 
-                                            <Link to={`/posts/${p.id}/edit`}>
-                                                <button>Edit</button>
-                                            </Link>
-
-                                            <button onClick={() => handleDelete(p.id)}>Delete</button>
                                         </div>
                                     </td>
                                 </tr>

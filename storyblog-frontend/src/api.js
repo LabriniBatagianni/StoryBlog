@@ -5,7 +5,7 @@ async function handle(res) {
         const text = await res.text().catch(() => "");
         throw new Error(`${res.status} ${res.statusText} ${text}`.trim());
     }
-    // 204 No Content (π.χ. delete)
+    // 204 No Content
     if (res.status === 204) return null;
     return res.json();
 }

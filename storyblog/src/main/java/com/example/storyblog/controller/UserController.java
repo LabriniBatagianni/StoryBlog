@@ -1,10 +1,12 @@
 package com.example.storyblog.controller;
 
-import com.example.storyblog.dto.UserRequest;
+import com.example.storyblog.entity.Post;
 import com.example.storyblog.entity.User;
+import com.example.storyblog.service.PostService;
 import com.example.storyblog.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import com.example.storyblog.dto.UserRequest;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PostService postService) {
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping
@@ -33,13 +37,9 @@ public class UserController {
         return userService.createUser(request);
     }
 
-    @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @Valid @RequestBody UserRequest request) {
-        return userService.updateUser(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @GetMapping("/{id}/posts")
+    public List<Post> getUserPosts(@PathVariable Long id) {
+        userService.findUserById(id);
+        return postService.findPostsByUserId(id);
     }
 }

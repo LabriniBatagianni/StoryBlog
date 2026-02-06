@@ -28,11 +28,4 @@ public class PageController {
         model.addAttribute("post", new Post());
         return "new-post";
     }
-
-    // POST /posts → save
-    @PostMapping("/posts")
-    public String createPost(@ModelAttribute Post post) {
-        postService.savePost(post);
-        return "redirect:/posts";
-    }
 }

@@ -6,13 +6,12 @@ import com.example.storyblog.entity.Post;
 import java.util.List;
 
 public interface PostService {
-
     List<Post> findAllPosts();
+    List<Post> findPostsByUserId(Long userId);
 
     Post findPostById(Long id);
 
-    Post savePost(Post post);
-
+    Post createPost(PostRequest request);
     Post updatePost(Long id, PostRequest request);
 
     void deletePost(Long id);

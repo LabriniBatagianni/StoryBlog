@@ -1,67 +1,62 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { getPostById } from "../api/posts";
 import StatusBox from "../components/StatusBox";
-import { getPostById, deletePost } from "../api/posts";
 
 export default function PostDetailsPage() {
     const { id } = useParams();
-    const navigate = useNavigate();
-
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    async function load() {
-        try {
-            setError("");
-            setLoading(true);
-            const data = await getPostById(id);
-            setPost(data);
-        } catch (e) {
-            setError(e?.message || "Failed to load post");
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        async function load() {
+            try {
+                setError("");
+                setLoading(true);
+                const data = await getPostById(id);
+                setPost(data);
+            } catch (e) {
+                setError(e?.message || "Failed to load post");
+            } finally {
+                setLoading(false);
+            }
         }
-    }
-
-    useEffect(() => { load(); }, [id]);
-
-    async function handleDelete() {
-        const ok = window.confirm("Delete this post?");
-        if (!ok) return;
-
-        try {
-            await deletePost(id);
-            navigate("/posts");
-        } catch (e) {
-            alert(e?.message || "Failed to delete");
-        }
-    }
+        load();
+    }, [id]);
 
     return (
-        <>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <h3 style={{ margin: 0 }}>Read Post</h3>
-                <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-                    <Link to={`/posts/${id}/edit`}><button>Edit</button></Link>
-                    <button onClick={handleDelete}>Delete</button>
-                </div>
+        <div style={{ display: "grid", gap: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h2 style={{ margin: 0 }}>{post?.title || "Read Post"}</h2>
+                <Link to="/posts" className="btn">Back</Link>
             </div>
 
             <StatusBox loading={loading} error={error}>
                 {!post ? null : (
-                    <article style={{ background: "#fff", border: "1px solid #eee", borderRadius: 12, padding: 16 }}>
-                        <h2 style={{ marginTop: 0 }}>{post.title}</h2>
-                        <div style={{ whiteSpace: "pre-wrap", lineHeight: 1.6, color: "#222" }}>
-                            {post.content}
-                        </div>
+                    <>
+                        {post?.author ? (
+                            <div style={{ color: "#555", marginBottom: 10 }}>
+                                By{" "}
+                                <Link to={`/users/${post.author.id}`} style={{ fontWeight: 700 }}>
+                                    {post.author.name}
+                                </Link>{" "}
+                                · {post.author.email}
+                            </div>
+                        ) : (
+                            <div style={{ color: "#777", marginBottom: 10 }}>
+                                By <i>Unknown author</i>
+                            </div>
+                        )}
 
-                        <div style={{ marginTop: 16 }}>
-                            <Link to="/posts">← Back to Posts</Link>
-                        </div>
-                    </article>
+                        <article style={{ border: "1px solid #ddd", borderRadius: 12, padding: 14 }}>
+                            <div style={{ whiteSpace: "pre-wrap", lineHeight: 1.7 }}>
+                                {post.content}
+                            </div>
+                        </article>
+                    </>
                 )}
             </StatusBox>
-        </>
+        </div>
     );
 }

@@ -3,6 +3,13 @@
     box-sizing: border-box;
 }
 
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
 body {
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont,
@@ -71,33 +78,56 @@ body {
 }
 
 /* ---------- BUTTONS ---------- */
-.btn {
-    display: inline-block;
-    padding: 8px 14px;
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    background: #f9fafb;
-    color: #111827;
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: 500;
+.btn-row {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.btn-primary {
-    background: #111827;
-    color: white;
-    border-color: #111827;
+.btn {
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 14px;
+    border: 1px solid #D0D5DD;
+    border-radius: 12px;
+    background: white;
+    color: #111827;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+}
+
+.btn:hover {
+    background: #F6F8FA;
+    filter: brightness(0.98);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .btn-danger {
-    background: #dc2626;
+    background: #E02424;
+    border-color: #E02424;
     color: white;
-    border-color: #dc2626;
 }
 
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+.btn-danger:hover {
+    background: #C81E1E;
+    border-color: #C81E1E;
 }
 
 /* ---------- GRID ---------- */
@@ -116,4 +146,26 @@ body {
     padding: 14px;
     font-size: 13px;
     color: #6b7280;
+}
+
+/* ---------- FORM LAYOUT ---------- */
+
+form label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-weight: 600;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+}
+
+form textarea {
+    min-height: 220px;
+    resize: vertical;
+    line-height: 1.6;
+    font-size: 1rem;
 }

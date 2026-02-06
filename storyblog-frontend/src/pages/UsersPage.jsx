@@ -40,9 +40,13 @@ export default function UsersPage() {
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                 <h3 style={{ margin: 0 }}>Users</h3>
 
-                <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-                    <button onClick={load}>Refresh</button>
-                    <Link to="/users/new"><button>Create</button></Link>
+                <div className="btn-row" style={{ marginLeft: "auto" }}>
+                    <button type="button" className="btn" onClick={load}>
+                        Refresh
+                    </button>
+                    <Link to="/users/new" className="btn">
+                        Create
+                    </Link>
                 </div>
             </div>
 
@@ -63,13 +67,26 @@ export default function UsersPage() {
                             </thead>
                             <tbody>
                             {users.map((u) => (
-                                <tr key={u.id} style={{ borderTop: "1px solid #eee" }}>
+                                <tr key={u.id} style={{ borderTop: "1px solid #EEEEEE" }}>
                                     <td style={{ padding: 10, fontWeight: 600 }}>{u.name}</td>
-                                    <td style={{ padding: 10, color: "#333" }}>{u.email}</td>
+                                    <td style={{ padding: 10, color: "#333333" }}>{u.email}</td>
                                     <td style={{ padding: 10 }}>
                                         <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
-                                            <Link to={`/users/${u.id}/edit`}><button>Edit</button></Link>
-                                            <button onClick={() => handleDelete(u.id)}>Delete</button>
+                                            <Link to={`/users/${u.id}/edit`} className="btn">
+                                                Edit
+                                            </Link>
+
+                                            <button
+                                                type="button"
+                                                className="btn btn-danger"
+                                                onClick={() => handleDelete(u.id)}
+                                            >
+                                                Delete
+                                            </button>
+
+                                            <Link to={`/users/${u.id}/posts`} className="btn">
+                                                Posts
+                                            </Link>
                                         </div>
                                     </td>
                                 </tr>

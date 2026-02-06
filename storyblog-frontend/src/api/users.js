@@ -6,12 +6,6 @@ export async function getUsers() {
     return res.json();
 }
 
-export async function getUserById(id) {
-    const res = await fetch(`${API_BASE}/${id}`);
-    if (!res.ok) throw new Error(`Failed to fetch user ${id}: ${res.status}`);
-    return res.json();
-}
-
 export async function createUser(user) {
     const res = await fetch(API_BASE, {
         method: "POST",
@@ -45,4 +39,16 @@ export async function deleteUser(id) {
         throw new Error(`Failed to delete user ${id}: ${res.status} ${text}`);
     }
     return true;
+}
+
+export async function getUserById(id) {
+    const res = await fetch(`/api/users/${id}`);
+    if (!res.ok) throw new Error("Failed to load user");
+    return res.json();
+}
+
+export async function getUserPosts(id) {
+    const res = await fetch(`/api/users/${id}/posts`);
+    if (!res.ok) throw new Error(`Failed to fetch user posts: ${res.status}`);
+    return res.json();
 }
