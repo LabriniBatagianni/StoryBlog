@@ -20,5 +20,5 @@ How to use the app:
 5. Change to frontend folder (**cd storyblog-frontend**)
 6. Install dependencies: **npm install**
 7. Run: **npm run dev**
-8. Frontend is now running at **http://localhost:5173**
+8. Frontend is now running at **http://localhost:5173**.
 9. Enjoy!
