@@ -1,5 +1,5 @@
 # Storyverse
-*A blog dedicated to posting and reading stories.*
+*A blog dedicated to posting and reading stories, with or without an account.*
 
 Storyblog is a full-stack project with:
 - Backend: Spring Boot (Java, Maven)
